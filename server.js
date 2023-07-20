@@ -40,7 +40,19 @@ app.use(flash())
   
 app.use('/', mainRoutes)
 app.use('/todos', todoRoutes)
- 
+
+    // Need to figure out how to move these to routes for better organization
+    app.get('/auth/google', passport.authenticate('google', {scope: ['profile'] }))
+
+    app.get(
+        '/auth/google/callback', 
+        passport.authenticate('google', { failureRedirect: '/login' }), 
+        (req, res) => {
+          // Successful authentication, reditect to a different rout or send a response
+            res.redirect('/todos')
+        }
+    )
+
 app.listen(process.env.PORT, ()=>{
     console.log('Server is running, you better catch it!')
 })    
